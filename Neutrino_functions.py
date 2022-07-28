@@ -14,7 +14,8 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, plot_data = None, lo
     plot_data: boolean - 
     """
     #x = 0.5*(bins[1:]+ bins[:-1])
-    
+    MC_frame = MC_frame[MC_frame['Subevent'] == 0]
+    dataFrame = dataFrame[dataFrame['Subevent'] == 0]
     if (plot_data == None):
         fig = plt.figure(figsize=(15,10))
         
