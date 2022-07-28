@@ -22,8 +22,10 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, plot_data = None, lo
         sns.histplot(data=MC_frame, x= variable , hue="category", multiple="stack", palette = 'deep', weights = scaling, bins=bins, legend = False, log_scale=logscale)
         
         plt.legend(title='Run 3', loc='upper right', labels=[r"$\nu$ NC", r"$\nu_{\mu}$ CC", r"$\nu_e$ CC", r"EXT", r"Out. fid. vol.", r"Cosmic"])
-        plt.xlabel(variable)
-        plt.ylabel("Events")
+        plt.xlabel(variable,fontsize = 20)
+        plt.ylabel("Events",fontsize = 20)
+        plt.xticks(fontsize=18)
+        plt.yticks(fontsize=18)
         plt.savefig(name+'.jpg', dpi=300) 
         plt.show()
         
@@ -50,11 +52,13 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, plot_data = None, lo
         labels=[r"$\nu$ NC", r"$\nu_{\mu}$ CC", r"$\nu_e$ CC", r"EXT", r"Out. fid. vol.", r"Cosmic", r"Data"]
         plt.legend(title='Run 3', loc='upper right', labels=labels)
         
-        if variable == trk_energy_tot:
+        if variable == 'trk_energy_tot':
             variable = "Reconstructed numu energy (Gev)"
-            
-        plt.xlabel(variable)
-        plt.ylabel("Events")
+         
+        plt.xlabel(variable,fontsize = 20)
+        plt.ylabel("Events",fontsize = 20)
+        plt.xticks(fontsize=18)
+        plt.yticks(fontsize=18)
         plt.savefig(name+'.jpg', dpi=300) 
         
         
