@@ -12,7 +12,9 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
     bins: int - number of bins
     name: string - name of the plot. The plot is saved
     scaling: array/list - weights you want to apply on MC data
-    plot_data: boolean - 
+    plot_data: boolean - if True then plots data as well
+    logscale: boolean - if True then y axis is log scale
+    dataFrame: pandas dataframe - data dataframe
     """    
     #x = 0.5*(bins[1:]+ bins[:-1])
     if (isinstance(MC_frame,pd.core.frame.DataFrame) != True):
@@ -27,23 +29,25 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
         fig = plt.figure(figsize=(15,10))
         
         labels=[r"$\nu$ NC", r"$\nu_{\mu}$ CC", r"$\nu_e$ CC", r"EXT", r"Out. fid. vol.", r"Cosmic"]
-        sns.histplot(data=MC_frame, x= variable , hue="category", multiple="stack", palette = 'deep', weights = scaling, bins=bins, 
-                 binrange=xlims, legend = False, log_scale=logscale)
+        sns.histplot(data=MC_frame, x= variable , hue="category", multiple="stack", palette = 'deep', weights = scaling, bins=bins, binrange=xlims, legend = False)
         
         plt.legend(title='Run 3', loc='upper right', labels=[r"$\nu$ NC", r"$\nu_{\mu}$ CC", r"$\nu_e$ CC", r"EXT", r"Out. fid. vol.", r"Cosmic"])
     
         if (isinstance(dataFrame,pd.core.frame.DataFrame) and plot_data == True):
             dataFrame = dataFrame[dataFrame['Subevent'] == 0]
             fig_data = plt.figure(figsize=(15,10))
-            Data_fig = sns.histplot(data=dataFrame, x=variable, bins=bins, binrange=xlims, legend = False, log_scale=logscale)
+            Data_fig = sns.histplot(data=dataFrame, x=variable, bins=bins, binrange=xlims, legend = False)
             bars = Data_fig.patches
         
             heights = [patch.get_height() for patch in bars]
             x = [patch.get_x() for patch in bars]
             w = [patch.get_width() for patch in bars]
             plt.close(fig_data)
-            del x[-1]
-            del heights[-1]
+            
+            ## If these variables are deleted than data has 1 less bin than MC
+            #del x[-1]
+            #del heights[-1]
+            
             new_bins = [start+w[0]/2 for start in x]
             #y_real = np.array(y_real)
             plt.errorbar(new_bins, heights , xerr=w[0]/2, fmt='.k')
@@ -54,6 +58,9 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
         if variable == 'trk_energy_tot':
             variable = r"Reconstructed $\nu_{\mu}$ energy (Gev)"
     
+        if (logscale == True):
+            plt.yscale('log')
+            
         plt.xlabel(variable,fontsize = 20)
         plt.ylabel("Events",fontsize = 20)
         plt.xticks(fontsize=18)
