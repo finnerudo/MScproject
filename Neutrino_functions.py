@@ -5,7 +5,7 @@ import pandas as pd
 #weight, bins, name, logscale = None, y_err = None
 #log_scale=logscale, labels = labels
 
-def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data = False, logscale = None, dataFrame = None):
+def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data = False, logscale = None, dataFrame = None, Stat_func = None):
     """
     MC_frame: pandas dataframe - MC dataframe
     variable: string - name of the variable
@@ -17,6 +17,7 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
     dataFrame: pandas dataframe - data dataframe
     """    
     #x = 0.5*(bins[1:]+ bins[:-1])
+    frac_unc_syst = 0.15
     if (isinstance(MC_frame,pd.core.frame.DataFrame) != True):
         
         print("\"MC_frame\" argument needs to be a pandas dataframe. Cannot plot.")
@@ -25,12 +26,33 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
     else:
     
         MC_frame = MC_frame[MC_frame['Subevent'] == 0]
+        
+        fig_MC_temp = plt.figure(figsize=(15,10))
+
+        temp_MC = sns.histplot(data=MC_frame, x= variable , weights = scaling, bins=bins, binrange=xlims, legend = False)
+        bars = temp_MC.patches
+        MC_heights = [patch.get_height() for patch in bars]
+        x = [patch.get_x() for patch in bars]
+        w = [patch.get_width() for patch in bars]
+        new_bins = [start+w[0]/2 for start in x]
+        plt.close(fig_MC_temp)
+        
+        if(Stat_func is None):
+            UNC_frac = 0.15
+            UNC = UNC_frac*np.array(MC_heights)
+            
+            
+        if(Stat_func is not None):
+            UNC_stat = Stat_func(MC_heights)
+            UNC_frac = np.sqrt((0.15**2)+(UNC_stat**2))
+            UNC = UNC_frac*np.array(MC_heights)
 
         fig = plt.figure(figsize=(15,10))
         
         labels=[r"$\nu$ NC", r"$\nu_{\mu}$ CC", r"$\nu_e$ CC", r"EXT", r"Out. fid. vol.", r"Cosmic"]
         sns.histplot(data=MC_frame, x= variable , hue="category", multiple="stack", palette = 'deep', weights = scaling, bins=bins, binrange=xlims, legend = False)
-        
+        plt.bar(new_bins, 2*UNC, width = w, bottom = np.array(MC_heights)-UNC, color='grey', alpha=0.7, hatch='/')
+
         plt.legend(title='Run 3', loc='upper right', labels=[r"$\nu$ NC", r"$\nu_{\mu}$ CC", r"$\nu_e$ CC", r"EXT", r"Out. fid. vol.", r"Cosmic"])
     
         if (isinstance(dataFrame,pd.core.frame.DataFrame) and plot_data == True):
