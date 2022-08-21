@@ -73,6 +73,8 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
             new_bins = [start+w[0]/2 for start in x]
             #y_real = np.array(y_real)
             plt.errorbar(new_bins, heights , xerr=w[0]/2, fmt='.k')
+            plt.legend(title='Run 3', loc='upper right', labels=[r"$\nu$ NC", r"$\nu_{\mu}$ CC", r"$\nu_e$ CC", r"EXT", r"Out. fid. vol.", r"Cosmic",  r"Uncertainty", r"Data"])
+
     
         elif(isinstance(dataFrame,pd.core.frame.DataFrame) != True and plot_data == True):
             print("\"dataFrame\" argument needs to be a pandas dataframe." + "\n" + "Just plotting Monte Carlo.")
