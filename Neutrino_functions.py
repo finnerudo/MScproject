@@ -25,7 +25,6 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
     
     else:
     
-        MC_frame = MC_frame[MC_frame['Subevent'] == 0]
         
         fig_MC_temp = plt.figure(figsize=(15,10))
 
@@ -56,7 +55,6 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
         plt.legend(title='Run 3', loc='upper right', labels=[r"$\nu$ NC", r"$\nu_{\mu}$ CC", r"$\nu_e$ CC", r"EXT", r"Out. fid. vol.", r"Cosmic",  r"Uncertainty"])
     
         if (isinstance(dataFrame,pd.core.frame.DataFrame) and plot_data == True):
-            dataFrame = dataFrame[dataFrame['Subevent'] == 0]
             fig_data = plt.figure(figsize=(15,10))
             Data_fig = sns.histplot(data=dataFrame, x=variable, bins=bins, binrange=xlims, legend = False)
             bars = Data_fig.patches
