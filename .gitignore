@@ -3,3 +3,4 @@
 __pycache__/
 data/data_flattened.pkl
 data/MC_EXT_flattened.pkl
+*.h5

@@ -61,7 +61,9 @@ def DatasetSelector(dataset):
 
 
 def EvDisp(run,subrun,event,plane,dataset,debug=False):
-    base_dir = "/hepgpu4-data2/lmlepin/Ole_files/"
+    #base_dir = "/hepgpu4-data2/lmlepin/Ole_files/"
+    # adjust based on where you're saving the data files
+    base_dir = "data/"
     input_file=base_dir+DatasetSelector(dataset)
     producer = 'wire'
     f = h5py.File(input_file,'r')
@@ -79,7 +81,7 @@ def EvDisp(run,subrun,event,plane,dataset,debug=False):
     image=wire_set[list(wire_set.keys())[0]]
     #print(image)
     fontprops=fm.FontProperties(size=10)
-    plot_title = "BNB Run 3, Dataset: " + dataset + ", Plane : " + plane_label
+    plot_title = "BNB Run 3, Dataset: " + dataset + ", Plane : " + plane_label + ", Event: " + str(event)
     fig, ax1= plt.subplots(1,1,figsize=(8.5,3.5))
     plt.title(plot_title)
     plt.xlabel("Wire number")
