@@ -5,7 +5,7 @@ import pandas as pd
 #weight, bins, name, logscale = None, y_err = None
 #log_scale=logscale, labels = labels
 
-def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data = False, logscale = None, dataFrame = None, Stat_func = None):
+def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_fig = True, plot_data = False, logscale = None, dataFrame = None, Stat_func = None):
     """
     MC_frame: pandas dataframe - MC dataframe
     variable: string - name of the variable
@@ -87,6 +87,13 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_data 
         plt.ylabel("Events",fontsize = 20)
         plt.xticks(fontsize=18)
         plt.yticks(fontsize=18)
-        plt.savefig(name+'.jpg', dpi=300) 
-        plt.show()
-   
+        if (plot_fig == True):
+            
+            plt.savefig(name+'.jpg', dpi=300) 
+            plt.show()
+        else:
+            plt.close()
+        # return the heights of each bin for data and MC
+        data_heights = heights
+
+        return MC_heights, data_heights
