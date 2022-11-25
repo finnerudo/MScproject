@@ -78,10 +78,10 @@ def EvDisp(run,subrun,event,plane,dataset,debug=False):
     #print(list(f['image2d']['metadata']))
     #print(list(f['image2d']['wire'].keys()))
     wire_set = f['image2d'][producer]
+    print(wire_set)
     image=wire_set[list(wire_set.keys())[0]]
-    #print(image)
     fontprops=fm.FontProperties(size=10)
-    plot_title = "BNB Run 3, Dataset: " + dataset + ", Plane : " + plane_label + ", Event: " + str(event)
+    plot_title = "BNB Run 3, Dataset: " + dataset + ", Plane : " + plane_label + ", Event: " + str(event) + ", Entry: " + str(entry)
     fig, ax1= plt.subplots(1,1,figsize=(8.5,3.5))
     plt.title(plot_title)
     plt.xlabel("Wire number")
