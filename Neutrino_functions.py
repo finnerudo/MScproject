@@ -5,6 +5,7 @@ import pandas as pd
 #weight, bins, name, logscale = None, y_err = None
 #log_scale=logscale, labels = labels
 
+
 def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_fig = True, plot_data = False, logscale = None, dataFrame = None, Stat_func = None):
     """
     MC_frame: pandas dataframe - MC dataframe
@@ -97,3 +98,10 @@ def histogram_plot(MC_frame, variable, bins, name, scaling, xlims=[], plot_fig =
         data_heights = heights
 
         return MC_heights, data_heights
+    
+    
+## Easter Egg
+## if you get stuck on exercise 6/7, this command will produce the desired result:
+##Neutrino_functions.histogram_plot(MC_EXT, 'trk_energy_tot', 20, 'saved_figure_name', MC_EXT['weight'],xlims=[np.min(MC_EXT['trk_energy_tot']), np.max(MC_EXT['trk_energy_tot'])], plot_data = True, logscale = False, dataFrame = data_frame)
+
+## But try and develop your own function to do the same!
