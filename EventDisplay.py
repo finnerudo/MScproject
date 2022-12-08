@@ -30,7 +30,10 @@ def SearchID(run,subrun,event,id_list):
             id = element[0]
         else:
             pass
-    #print(id) # For debugging 
+    # fail case
+    if (id==0):
+        print("No such event found! Please check that such an event exists.")
+        print("Displaying event: {}, subrun: {}, run: {}".format(id_list[0][1], id_list[0][2], id_list[0][3]) )
     return id 
 
 def PlaneLabel(plane):
@@ -69,10 +72,14 @@ def EvDisp(run,subrun,event,plane,dataset,debug=False):
     f = h5py.File(input_file,'r')
     event_id_list = f['eventid']
     entry = SearchID(run,subrun,event,event_id_list)
-    if(debug):
-    	entry = 1000
-    else: 
-    	entry = SearchID(run,subrun,event,event_id_list)
+    # restating values of dataset, event, entry, as they can be modified if incorrect value is selected.
+    event = event_id_list[entry][1]
+    subrun = event_id_list[entry][2]
+    run = event_id_list[entry][3]
+    #if(debug):
+    #	entry = 1000
+    #else: 
+    #	entry = SearchID(run,subrun,event,event_id_list)
     plane_label = PlaneLabel(plane)
     #print(list(f['image2d'].keys()))
     #print(list(f['image2d']['metadata']))
@@ -95,3 +102,27 @@ def EvDisp(run,subrun,event,plane,dataset,debug=False):
                                 fontproperties=fontprops)
     ax1.add_artist(scalebar1)
     plt.show()
+
+    
+def list_entries(dataset, sliced=False, slice_val = 0):
+    base_dir = "data/"
+    input_file=base_dir+DatasetSelector(dataset) 
+    
+    f = h5py.File(input_file,'r')
+    event_id_list = f['eventid']
+    
+    # can remove entries from your printed list, as there are many
+    
+    if sliced == True:    
+        i = 0
+        for element in event_id_list:
+            if i > slice_val:
+                break;
+            print("Event: {}, Subrun: {}, Run: {}".format(element[1], element[2], element[3]))
+            i += 1
+    else:
+        print("Caution: You are printing every event in the file (there are {}).".format(len(event_id_list)))
+        for element in event_id_list:
+            print("Event: {}, Subrun: {}, Run: {}".format(element[1], element[2], element[3]))
+    
+            
